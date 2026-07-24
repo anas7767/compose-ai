@@ -1,0 +1,50 @@
+{
+  "name": "@compose-ai/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "predev": "node ../../scripts/check-node-version.mjs",
+    "dev": "next dev --turbopack",
+    "prebuild": "node ../../scripts/check-node-version.mjs",
+    "build": "next build",
+    "start": "next start",
+    "prelint": "node ../../scripts/check-node-version.mjs",
+    "lint": "eslint . --max-warnings=0",
+    "pretypecheck": "node ../../scripts/check-node-version.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.31.0",
+    "@clerk/themes": "^2.2.0",
+    "@compose-ai/shared": "file:../../packages/shared",
+    "@hookform/resolvers": "^5.4.0",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.4.0",
+    "@tanstack/react-query": "^5.101.2",
+    "@types/three": "^0.180.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "motion": "^12.42.2",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.81.0",
+    "tailwind-merge": "^3.0.0",
+    "three": "^0.180.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^15.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.17.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.18.0"
+  }
+}

@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+htmlcov/
+.coverage
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+.compose-assets/
+apps/api/.compose-assets/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!apps/api/.env.example
+!apps/web/.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

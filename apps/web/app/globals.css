@@ -1,0 +1,1369 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.35);
+  --shadow-sm: 0 6px 18px rgb(0 0 0 / 0.18);
+  --shadow-lg: 0 20px 50px rgb(0 0 0 / 0.45);
+}
+
+:root {
+  color-scheme: dark;
+  --background: oklch(0.115 0.006 285);
+  --foreground: oklch(0.965 0.003 285);
+  --card: oklch(0.15 0.008 285);
+  --card-foreground: oklch(0.965 0.003 285);
+  --popover: oklch(0.19 0.01 285);
+  --popover-foreground: oklch(0.965 0.003 285);
+  --primary: oklch(0.66 0.2 293);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.205 0.012 285);
+  --secondary-foreground: oklch(0.94 0.004 285);
+  --muted: oklch(0.185 0.01 285);
+  --muted-foreground: oklch(0.7 0.012 285);
+  --accent: oklch(0.21 0.07 293);
+  --accent-foreground: oklch(0.94 0.02 293);
+  --destructive: oklch(0.63 0.23 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.27 0.012 285);
+  --input: oklch(0.24 0.012 285);
+  --ring: oklch(0.68 0.19 293);
+  --sidebar: oklch(0.13 0.007 285);
+  --sidebar-foreground: oklch(0.94 0.004 285);
+  --sidebar-border: oklch(0.235 0.011 285);
+  --success: oklch(0.72 0.16 150);
+  --warning: oklch(0.8 0.16 85);
+  --info: oklch(0.7 0.14 240);
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    Inter, "SF Pro Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--primary) 42%, transparent);
+  color: var(--foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Public landing and authentication surfaces use an isolated light palette. */
+.compose-public-light {
+  color-scheme: light;
+  --background: oklch(0.985 0.006 275);
+  --foreground: oklch(0.19 0.018 275);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.018 275);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.018 275);
+  --primary: oklch(0.57 0.23 292);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.96 0.014 273);
+  --secondary-foreground: oklch(0.28 0.025 275);
+  --muted: oklch(0.965 0.008 275);
+  --muted-foreground: oklch(0.52 0.025 275);
+  --accent: oklch(0.94 0.03 285);
+  --accent-foreground: oklch(0.45 0.18 292);
+  --border: oklch(0.9 0.012 275);
+  --input: oklch(0.88 0.018 275);
+  --ring: oklch(0.62 0.2 292);
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 0.98), rgb(247 248 252 / 0.98) 48%, rgb(239 246 255 / 0.92)),
+    #f7f8fc;
+  color: #0f172a;
+  font-family:
+    Inter, "SF Pro Display", "Avenir Next", "Segoe UI", ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0;
+}
+
+.compose-public-light *,
+.compose-public-light *::before,
+.compose-public-light *::after {
+  letter-spacing: 0;
+}
+
+.compose-public-light ::selection {
+  background: rgb(196 181 253 / 0.58);
+  color: #172033;
+}
+
+.compose-public-grid {
+  background-image: radial-gradient(circle, rgb(100 116 139 / 0.24) 1px, transparent 1.35px);
+  background-position: 0 0;
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.78) 45%, transparent 92%);
+  opacity: 0.45;
+  animation: compose-grid-drift 22s linear infinite;
+}
+
+.compose-pointer-glow {
+  opacity: 1;
+}
+
+.compose-public-nav::after {
+  position: absolute;
+  right: 3rem;
+  bottom: 0;
+  left: 3rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(203 213 225 / 0.75), transparent);
+  content: "";
+}
+
+.compose-public-nav-link,
+.compose-auth-back {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 6px;
+  color: #475569;
+  font-size: 0.875rem;
+  font-weight: 600;
+  outline: none;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.compose-public-nav-link:hover,
+.compose-auth-back:hover {
+  color: #5b35d5;
+}
+
+.compose-public-nav-link:focus-visible,
+.compose-auth-back:focus-visible,
+.compose-primary-action:focus-visible,
+.compose-secondary-action:focus-visible {
+  outline: 2px solid #7c5ce8;
+  outline-offset: 3px;
+}
+
+.compose-primary-action,
+.compose-secondary-action {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  border-radius: 7px;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 650;
+  line-height: 1.25rem;
+  outline: none;
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease,
+    background-color 220ms ease;
+}
+
+.compose-primary-action {
+  border: 1px solid rgb(94 68 196 / 0.72);
+  background: linear-gradient(120deg, #7253dc 0%, #635bd8 48%, #4d7dda 100%);
+  box-shadow:
+    0 10px 24px rgb(91 65 185 / 0.2),
+    inset 0 1px 0 rgb(255 255 255 / 0.28);
+  color: #fff;
+}
+
+.compose-primary-action:hover {
+  box-shadow:
+    0 14px 30px rgb(91 65 185 / 0.26),
+    inset 0 1px 0 rgb(255 255 255 / 0.3);
+  transform: translateY(-1px);
+}
+
+.compose-secondary-action {
+  border: 1px solid rgb(203 213 225 / 0.9);
+  background: rgb(255 255 255 / 0.72);
+  box-shadow: 0 5px 18px rgb(30 41 59 / 0.06);
+  color: #334155;
+  backdrop-filter: blur(16px);
+}
+
+.compose-secondary-action:hover {
+  border-color: rgb(167 139 250 / 0.8);
+  background: rgb(255 255 255 / 0.94);
+  box-shadow: 0 10px 25px rgb(76 64 142 / 0.1);
+  transform: translateY(-1px);
+}
+
+.compose-hero-art::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgb(247 248 252 / 0.98) 0%,
+    rgb(247 248 252 / 0.9) 34%,
+    rgb(247 248 252 / 0.28) 57%,
+    transparent 78%
+  );
+  content: "";
+}
+
+.compose-hero-image {
+  object-fit: cover !important;
+  object-position: center center;
+  filter: saturate(0.92) contrast(0.98);
+}
+
+.compose-image-loading {
+  background: linear-gradient(105deg, #f7f8fc 18%, #f0edff 42%, #eaf4ff 54%, #f7f8fc 76%);
+  background-size: 240% 100%;
+  animation: compose-shimmer 1.7s ease-in-out infinite;
+}
+
+.compose-floating-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid rgb(203 213 225 / 0.82);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 0.8);
+  padding: 0.75rem;
+  box-shadow:
+    0 20px 50px rgb(51 65 85 / 0.12),
+    inset 0 1px 0 rgb(255 255 255 / 0.82);
+  backdrop-filter: blur(20px);
+}
+
+.compose-blueprint-sheet,
+.compose-auth-sketch {
+  position: relative;
+  width: 180px;
+  height: 132px;
+  overflow: hidden;
+  border: 1px solid rgb(139 92 246 / 0.26);
+  border-radius: 8px;
+  background:
+    linear-gradient(rgb(139 92 246 / 0.075) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(59 130 246 / 0.07) 1px, transparent 1px),
+    rgb(255 255 255 / 0.84);
+  background-size: 12px 12px;
+  box-shadow:
+    0 22px 55px rgb(76 65 132 / 0.12),
+    inset 0 1px 0 rgb(255 255 255 / 0.9);
+  backdrop-filter: blur(18px);
+}
+
+.compose-blueprint-room {
+  position: absolute;
+  border: 1px solid rgb(109 86 214 / 0.52);
+  background: rgb(124 92 230 / 0.035);
+}
+
+.compose-section-kicker {
+  color: #6d46d7;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1rem;
+  text-transform: uppercase;
+}
+
+.compose-capability-card {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  min-height: 184px;
+  border: 1px solid rgb(226 232 240 / 0.96);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 0.8);
+  padding: 1.5rem;
+  box-shadow:
+    0 12px 35px rgb(51 65 85 / 0.06),
+    inset 0 1px 0 rgb(255 255 255 / 0.86);
+  backdrop-filter: blur(18px);
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.compose-capability-card:hover {
+  border-color: rgb(196 181 253 / 0.9);
+  box-shadow:
+    0 18px 42px rgb(76 65 132 / 0.1),
+    inset 0 1px 0 rgb(255 255 255 / 0.9);
+}
+
+.compose-auth-scene {
+  opacity: 0.66;
+}
+
+.compose-auth-scene::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(247 248 252 / 0.04) 0%, rgb(247 248 252 / 0.46) 52%, #f7f8fc 82%),
+    linear-gradient(0deg, rgb(247 248 252 / 0.82), transparent 44%);
+  content: "";
+}
+
+.compose-auth-scene-image {
+  object-position: center center;
+  filter: saturate(0.86) contrast(0.96);
+  transform: scaleX(-1);
+}
+
+.compose-auth-glass {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.9);
+  border-radius: 8px;
+  background: rgb(255 255 255 / 0.76);
+  padding: 1.5rem;
+  box-shadow:
+    0 30px 80px rgb(58 48 104 / 0.16),
+    0 2px 8px rgb(30 41 59 / 0.05),
+    inset 0 1px 0 rgb(255 255 255 / 0.92);
+  backdrop-filter: blur(28px) saturate(1.12);
+}
+
+.compose-auth-sketch {
+  width: 208px;
+  height: 152px;
+}
+
+.compose-auth-loading {
+  position: relative;
+  min-height: 392px;
+  overflow: hidden;
+  padding: 0.5rem 0 0;
+}
+
+.compose-auth-loading::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 28%, rgb(255 255 255 / 0.78) 46%, transparent 64%);
+  content: "";
+  transform: translateX(-100%);
+  animation: compose-loading-sweep 1.45s ease-in-out infinite;
+}
+
+/* Clerk stays functionally unchanged; these rules only restyle it inside the login surface. */
+.compose-auth-shell .cl-rootBox,
+.compose-auth-shell .cl-cardBox,
+.compose-auth-shell .cl-card {
+  width: 100%;
+}
+
+.compose-auth-shell .cl-cardBox,
+.compose-auth-shell .cl-card {
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.compose-auth-shell .cl-card {
+  gap: 1.3rem !important;
+  padding: 0 !important;
+}
+
+.compose-auth-shell .cl-header {
+  padding: 0 !important;
+}
+
+.compose-auth-shell .cl-headerTitle {
+  color: #0f172a !important;
+  font-family: inherit !important;
+  font-size: 1.75rem !important;
+  font-weight: 650 !important;
+  line-height: 2.1rem !important;
+}
+
+.compose-auth-shell .cl-headerSubtitle,
+.compose-auth-shell .cl-footerActionText,
+.compose-auth-shell .cl-dividerText,
+.compose-auth-shell .cl-formFieldInfoText,
+.compose-auth-shell .cl-formResendCodeLink,
+.compose-auth-shell .cl-formFieldHintText {
+  color: #64748b !important;
+  font-family: inherit !important;
+}
+
+.compose-auth-shell .cl-socialButtonsBlockButton,
+.compose-auth-shell .cl-alternativeMethodsBlockButton {
+  min-height: 44px !important;
+  border: 1px solid #dbe2ec !important;
+  border-radius: 7px !important;
+  background: rgb(255 255 255 / 0.82) !important;
+  box-shadow: 0 4px 14px rgb(30 41 59 / 0.04) !important;
+  color: #334155 !important;
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 180ms ease !important;
+}
+
+.compose-auth-shell .cl-socialButtonsBlockButton:hover,
+.compose-auth-shell .cl-alternativeMethodsBlockButton:hover {
+  border-color: #b8a8f4 !important;
+  background: #fff !important;
+  transform: translateY(-1px);
+}
+
+.compose-auth-shell .cl-dividerLine {
+  background: #dfe5ed !important;
+}
+
+.compose-auth-shell .cl-formFieldLabel {
+  color: #334155 !important;
+  font-family: inherit !important;
+  font-size: 0.8125rem !important;
+  font-weight: 650 !important;
+}
+
+.compose-auth-shell .cl-formFieldInput {
+  min-height: 44px !important;
+  border: 1px solid #d8e0eb !important;
+  border-radius: 7px !important;
+  background: rgb(255 255 255 / 0.84) !important;
+  box-shadow:
+    0 1px 2px rgb(30 41 59 / 0.03),
+    inset 0 1px 0 rgb(255 255 255 / 0.75) !important;
+  color: #0f172a !important;
+  font-family: inherit !important;
+}
+
+.compose-auth-shell .cl-formFieldInput::placeholder {
+  color: #94a3b8 !important;
+}
+
+.compose-auth-shell .cl-formFieldInput:focus {
+  border-color: #8b70e8 !important;
+  box-shadow: 0 0 0 3px rgb(139 112 232 / 0.15) !important;
+}
+
+.compose-auth-shell .cl-formButtonPrimary {
+  min-height: 44px !important;
+  border: 1px solid rgb(94 68 196 / 0.72) !important;
+  border-radius: 7px !important;
+  background: linear-gradient(120deg, #7253dc 0%, #635bd8 48%, #4d7dda 100%) !important;
+  box-shadow:
+    0 10px 24px rgb(91 65 185 / 0.2),
+    inset 0 1px 0 rgb(255 255 255 / 0.28) !important;
+  color: #fff !important;
+  font-family: inherit !important;
+  font-weight: 650 !important;
+}
+
+.compose-auth-shell .cl-formButtonPrimary:hover {
+  box-shadow:
+    0 14px 30px rgb(91 65 185 / 0.26),
+    inset 0 1px 0 rgb(255 255 255 / 0.3) !important;
+}
+
+.compose-auth-shell .cl-formButtonPrimary:focus-visible,
+.compose-auth-shell .cl-socialButtonsBlockButton:focus-visible,
+.compose-auth-shell .cl-formFieldInput:focus-visible {
+  outline: 2px solid #7c5ce8 !important;
+  outline-offset: 2px !important;
+}
+
+.compose-auth-shell .cl-footer,
+.compose-auth-shell .cl-footerAction {
+  background: transparent !important;
+}
+
+.compose-auth-shell .cl-footerActionLink,
+.compose-auth-shell .cl-formFieldAction,
+.compose-auth-shell .cl-formResendCodeLink {
+  color: #6841d4 !important;
+  font-family: inherit !important;
+  font-weight: 650 !important;
+}
+
+.compose-auth-shell .cl-footerActionLink:hover,
+.compose-auth-shell .cl-formFieldAction:hover,
+.compose-auth-shell .cl-formResendCodeLink:hover {
+  color: #4d2cab !important;
+}
+
+.compose-auth-shell .cl-identityPreview {
+  border: 1px solid #dfe5ed !important;
+  border-radius: 7px !important;
+  background: rgb(255 255 255 / 0.72) !important;
+}
+
+.compose-auth-shell .cl-alert {
+  border-radius: 7px !important;
+  font-family: inherit !important;
+}
+
+@keyframes compose-grid-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 56px 28px;
+  }
+}
+
+@keyframes compose-shimmer {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes compose-loading-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  65%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 1023px) {
+  .compose-hero-art::after {
+    background: linear-gradient(
+      90deg,
+      rgb(247 248 252 / 0.98) 0%,
+      rgb(247 248 252 / 0.92) 47%,
+      rgb(247 248 252 / 0.38) 72%,
+      transparent 100%
+    );
+  }
+
+  .compose-auth-scene {
+    opacity: 0.34;
+  }
+
+  .compose-auth-scene::after {
+    background: linear-gradient(0deg, #f7f8fc 6%, rgb(247 248 252 / 0.84) 56%, rgb(247 248 252 / 0.42));
+  }
+}
+
+@media (max-width: 767px) {
+  .compose-public-nav::after {
+    right: 1.25rem;
+    left: 1.25rem;
+  }
+
+  .compose-pointer-glow {
+    display: none;
+  }
+
+  .compose-hero-art {
+    top: 28%;
+  }
+
+  .compose-hero-art::after {
+    background: linear-gradient(
+      180deg,
+      #f7f8fc 0%,
+      rgb(247 248 252 / 0.88) 36%,
+      rgb(247 248 252 / 0.25) 66%,
+      rgb(247 248 252 / 0.72) 100%
+    );
+  }
+
+  .compose-hero-image {
+    object-position: 62% center;
+  }
+
+  .compose-auth-back {
+    width: 40px;
+    justify-content: center;
+    overflow: hidden;
+    color: transparent;
+    white-space: nowrap;
+  }
+
+  .compose-auth-back svg {
+    flex: 0 0 auto;
+    color: #475569;
+  }
+
+  .compose-auth-scene-image {
+    object-position: 58% bottom;
+  }
+
+  .compose-auth-glass {
+    padding: 1.25rem;
+  }
+
+  .compose-capability-card {
+    min-height: 0;
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .compose-auth-glass {
+    padding: 1.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compose-public-grid,
+  .compose-image-loading,
+  .compose-auth-loading::after {
+    animation: none !important;
+  }
+}
+
+/* AI Architect is a focused light workspace inside the protected application shell. */
+.compose-architect-light {
+  color-scheme: light;
+  --background: oklch(0.992 0.003 275);
+  --foreground: oklch(0.19 0.018 275);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.018 275);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.018 275);
+  --primary: oklch(0.57 0.22 292);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.965 0.008 275);
+  --secondary-foreground: oklch(0.31 0.025 275);
+  --muted: oklch(0.97 0.006 275);
+  --muted-foreground: oklch(0.52 0.025 275);
+  --accent: oklch(0.955 0.026 286);
+  --accent-foreground: oklch(0.43 0.18 292);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.905 0.012 275);
+  --input: oklch(0.88 0.016 275);
+  --ring: oklch(0.62 0.19 292);
+  --sidebar: oklch(0.978 0.006 275);
+  --sidebar-foreground: oklch(0.24 0.02 275);
+  --sidebar-border: oklch(0.91 0.012 275);
+  --success: oklch(0.55 0.15 150);
+  --warning: oklch(0.62 0.15 75);
+  --info: oklch(0.58 0.15 245);
+  min-height: calc(100dvh - 4rem);
+  background: #f7f8fb;
+  color: #172033;
+  font-family:
+    Inter, "SF Pro Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  letter-spacing: 0;
+}
+
+.compose-architect-light *,
+.compose-architect-light *::before,
+.compose-architect-light *::after {
+  letter-spacing: 0;
+}
+
+.compose-architect-light ::selection {
+  background: rgb(196 181 253 / 0.52);
+  color: #172033;
+}
+
+.compose-architect-light .compose-architect-frame {
+  box-shadow:
+    0 18px 55px rgb(51 65 85 / 0.08),
+    0 2px 8px rgb(51 65 85 / 0.04);
+}
+
+.compose-architect-light :where([data-architect-scroll]) {
+  scrollbar-color: rgb(196 181 253) transparent;
+  scrollbar-width: thin;
+}
+
+.compose-architect-light :where([data-architect-scroll])::-webkit-scrollbar {
+  width: 8px;
+}
+
+.compose-architect-light :where([data-architect-scroll])::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgb(196 181 253);
+  background-clip: padding-box;
+}
+
+.compose-architect-panel-active {
+  animation: compose-architect-panel-in 180ms ease-out;
+}
+
+@keyframes compose-architect-panel-in {
+  from {
+    opacity: 0.72;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compose-architect-panel-active {
+    animation: none !important;
+  }
+}
+
+/* Floor-plan generation uses the same isolated light language as AI Architect. */
+.compose-floor-plan-light {
+  color-scheme: light;
+  --background: oklch(0.992 0.003 275);
+  --foreground: oklch(0.19 0.018 275);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.018 275);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.018 275);
+  --primary: oklch(0.57 0.22 292);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.965 0.008 275);
+  --secondary-foreground: oklch(0.31 0.025 275);
+  --muted: oklch(0.97 0.006 275);
+  --muted-foreground: oklch(0.52 0.025 275);
+  --accent: oklch(0.955 0.026 286);
+  --accent-foreground: oklch(0.43 0.18 292);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.905 0.012 275);
+  --input: oklch(0.88 0.016 275);
+  --ring: oklch(0.62 0.19 292);
+  --success: oklch(0.55 0.15 150);
+  --warning: oklch(0.62 0.15 75);
+  --info: oklch(0.58 0.15 245);
+  background: #f7f8fb;
+  color: #172033;
+  font-family:
+    Inter, "SF Pro Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  letter-spacing: 0;
+}
+
+.compose-floor-plan-light *,
+.compose-floor-plan-light *::before,
+.compose-floor-plan-light *::after {
+  letter-spacing: 0;
+}
+
+.compose-floor-plan-light ::selection {
+  background: rgb(196 181 253 / 0.52);
+  color: #172033;
+}
+
+.compose-floor-plan-light :where([data-floor-scroll]) {
+  scrollbar-color: rgb(196 181 253) transparent;
+  scrollbar-width: thin;
+}
+
+.compose-floor-plan-light :where([data-floor-scroll])::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.compose-floor-plan-light :where([data-floor-scroll])::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgb(196 181 253);
+  background-clip: padding-box;
+}
+
+.compose-floor-canvas {
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.1) 1px, transparent 1px);
+  background-position: center;
+  background-size: 20px 20px;
+}
+
+.compose-floor-option-card {
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.compose-floor-option-card:hover {
+  border-color: rgb(196 181 253);
+  box-shadow:
+    0 12px 28px rgb(51 65 85 / 0.09),
+    0 2px 5px rgb(51 65 85 / 0.04);
+}
+
+.compose-floor-action {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.compose-floor-action::after {
+  position: absolute;
+  inset: -40%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 255 255 / 0.32), transparent 58%);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.45);
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.compose-floor-action:active::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compose-floor-option-card,
+  .compose-floor-action::after {
+    transition: none !important;
+  }
+}
+
+/* Project creation wizard reuses the premium light product language. */
+.compose-project-wizard-light {
+  color-scheme: light;
+  --background: oklch(0.992 0.003 275);
+  --foreground: oklch(0.19 0.018 275);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.018 275);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.018 275);
+  --primary: oklch(0.57 0.22 292);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.965 0.008 275);
+  --secondary-foreground: oklch(0.31 0.025 275);
+  --muted: oklch(0.97 0.006 275);
+  --muted-foreground: oklch(0.52 0.025 275);
+  --accent: oklch(0.955 0.026 286);
+  --accent-foreground: oklch(0.43 0.18 292);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.905 0.012 275);
+  --input: oklch(0.88 0.016 275);
+  --ring: oklch(0.62 0.19 292);
+  min-height: calc(100dvh - 4rem);
+  background:
+    radial-gradient(circle at 18% 8%, rgb(221 214 254 / 0.42), transparent 28rem),
+    radial-gradient(circle at 88% 10%, rgb(191 219 254 / 0.42), transparent 26rem),
+    linear-gradient(180deg, #fbfcff 0%, #f6f8fc 48%, #f8fafc 100%);
+  color: #172033;
+  font-family:
+    Inter, "SF Pro Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  letter-spacing: 0;
+}
+
+.compose-project-wizard-light *,
+.compose-project-wizard-light *::before,
+.compose-project-wizard-light *::after {
+  letter-spacing: 0;
+}
+
+.compose-project-wizard-light ::selection {
+  background: rgb(196 181 253 / 0.52);
+  color: #172033;
+}
+
+.compose-project-wizard-light input:not([type="checkbox"]),
+.compose-project-wizard-light textarea,
+.compose-project-wizard-light select {
+  border-color: rgb(203 213 225 / 0.88);
+  background: rgb(255 255 255 / 0.92);
+  color: #172033;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+.compose-project-wizard-light input:not([type="checkbox"]):focus-visible,
+.compose-project-wizard-light textarea:focus-visible,
+.compose-project-wizard-light select:focus-visible {
+  border-color: rgb(167 139 250);
+  box-shadow:
+    0 0 0 4px rgb(196 181 253 / 0.26),
+    0 8px 20px rgb(79 70 229 / 0.08);
+}
+
+.compose-project-wizard-light label {
+  color: #334155;
+}
+
+.compose-project-wizard-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgb(99 102 241 / 0.11) 1px, transparent 1px),
+    linear-gradient(135deg, rgb(255 255 255 / 0.72), transparent 48%);
+  background-position:
+    0 0,
+    center;
+  background-size:
+    18px 18px,
+    cover;
+  mask-image: linear-gradient(90deg, #000 0%, transparent 80%);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.compose-project-illustration {
+  position: absolute;
+  inset: auto -1.5rem -1.5rem auto;
+  width: 9rem;
+  height: 8rem;
+  opacity: 0.55;
+}
+
+.compose-project-illustration span {
+  position: absolute;
+  display: block;
+  border: 1px solid rgb(96 165 250 / 0.48);
+  background: rgb(255 255 255 / 0.62);
+  box-shadow: 0 10px 30px rgb(59 130 246 / 0.12);
+  transform: rotate(-8deg);
+}
+
+.compose-project-illustration span:nth-child(1) {
+  right: 1.8rem;
+  bottom: 0.8rem;
+  width: 4.8rem;
+  height: 5.4rem;
+}
+
+.compose-project-illustration span:nth-child(2) {
+  right: 3.6rem;
+  bottom: 2.6rem;
+  width: 3.8rem;
+  height: 4rem;
+}
+
+.compose-project-illustration span:nth-child(3) {
+  right: 0.7rem;
+  bottom: 3.7rem;
+  width: 3rem;
+  height: 3.3rem;
+}
+
+.compose-project-action {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.compose-project-action::after {
+  position: absolute;
+  inset: -40%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 255 255 / 0.32), transparent 58%);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.45);
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.compose-project-action:active::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.compose-project-plot-card {
+  position: relative;
+  display: grid;
+  min-height: 11rem;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgb(191 219 254 / 0.8);
+  border-radius: 1.1rem;
+  background-color: rgb(248 250 252 / 0.78);
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.12) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+.compose-project-plot-shape {
+  position: relative;
+  width: 7.5rem;
+  height: 6rem;
+  border: 2px solid rgb(124 58 237 / 0.82);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 0.72);
+  box-shadow: 0 18px 40px rgb(79 70 229 / 0.14);
+  transform: perspective(16rem) rotateX(18deg) rotateZ(-4deg);
+}
+
+.compose-project-plot-shape span {
+  position: absolute;
+  display: block;
+  background: rgb(124 58 237 / 0.16);
+}
+
+.compose-project-plot-shape span:nth-child(1) {
+  inset: 1rem auto auto 1rem;
+  width: 2.2rem;
+  height: 1.6rem;
+  border-radius: 0.45rem;
+}
+
+.compose-project-plot-shape span:nth-child(2) {
+  right: 1rem;
+  bottom: 1rem;
+  width: 2rem;
+  height: 2.1rem;
+  border-radius: 0.45rem;
+}
+
+.compose-project-plot-shape span:nth-child(3) {
+  left: 1.1rem;
+  bottom: 1.1rem;
+  width: 2.3rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: rgb(59 130 246 / 0.28);
+}
+
+.compose-project-road {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgb(37 99 235);
+}
+
+.compose-project-road::before {
+  display: block;
+  width: 4rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: rgb(96 165 250 / 0.34);
+  content: "";
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compose-project-action::after {
+    transition: none !important;
+  }
+}
+
+/* Signed-in dashboard polish: premium light, dense, and calm. */
+.compose-dashboard-light {
+  color-scheme: light;
+  --background: oklch(0.992 0.003 275);
+  --foreground: oklch(0.19 0.018 275);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.018 275);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.018 275);
+  --primary: oklch(0.57 0.22 292);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.965 0.008 275);
+  --secondary-foreground: oklch(0.31 0.025 275);
+  --muted: oklch(0.97 0.006 275);
+  --muted-foreground: oklch(0.52 0.025 275);
+  --accent: oklch(0.955 0.026 286);
+  --accent-foreground: oklch(0.43 0.18 292);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.905 0.012 275);
+  --input: oklch(0.88 0.016 275);
+  --ring: oklch(0.62 0.19 292);
+  background:
+    radial-gradient(circle at 16% 4%, rgb(221 214 254 / 0.38), transparent 28rem),
+    radial-gradient(circle at 92% 2%, rgb(191 219 254 / 0.34), transparent 27rem),
+    linear-gradient(180deg, #fbfcff 0%, #f6f8fc 50%, #f8fafc 100%);
+  color: #172033;
+  font-family:
+    Inter, "SF Pro Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  letter-spacing: 0;
+}
+
+.compose-dashboard-light *,
+.compose-dashboard-light *::before,
+.compose-dashboard-light *::after {
+  letter-spacing: 0;
+}
+
+.compose-dashboard-light ::selection {
+  background: rgb(196 181 253 / 0.52);
+  color: #172033;
+}
+
+.compose-dashboard-light :where([data-slot="project-grid"]) {
+  align-items: stretch;
+}
+
+.compose-dashboard-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgb(99 102 241 / 0.1) 1px, transparent 1px),
+    linear-gradient(135deg, rgb(255 255 255 / 0.78), transparent 52%);
+  background-position:
+    0 0,
+    center;
+  background-size:
+    18px 18px,
+    cover;
+  mask-image: linear-gradient(90deg, #000 0%, transparent 82%);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.compose-dashboard-illustration {
+  position: absolute;
+  inset: auto -1rem -1.2rem auto;
+  width: 14rem;
+  height: 9rem;
+  opacity: 0.58;
+  pointer-events: none;
+}
+
+.compose-dashboard-illustration span {
+  position: absolute;
+  display: block;
+  border: 1px solid rgb(96 165 250 / 0.48);
+  background: rgb(255 255 255 / 0.62);
+  box-shadow: 0 18px 45px rgb(59 130 246 / 0.12);
+  transform: skewY(-8deg);
+}
+
+.compose-dashboard-illustration span:nth-child(1) {
+  right: 5.5rem;
+  bottom: 1rem;
+  width: 4.4rem;
+  height: 6.2rem;
+}
+
+.compose-dashboard-illustration span:nth-child(2) {
+  right: 2.8rem;
+  bottom: 1.8rem;
+  width: 4rem;
+  height: 5rem;
+}
+
+.compose-dashboard-illustration span:nth-child(3) {
+  right: 0.6rem;
+  bottom: 2.6rem;
+  width: 3.2rem;
+  height: 4rem;
+}
+
+.compose-dashboard-action,
+.compose-dashboard-project-card {
+  will-change: transform;
+}
+
+.compose-dashboard-action {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.compose-dashboard-action::after {
+  position: absolute;
+  inset: -42%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 255 255 / 0.34), transparent 58%);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.45);
+  transition:
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.compose-dashboard-action:active::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.compose-dashboard-project-thumb {
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.1) 1px, transparent 1px);
+  background-position: center;
+  background-size: 18px 18px;
+}
+
+.compose-dashboard-project-lines {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  opacity: 0.72;
+}
+
+.compose-dashboard-project-lines span {
+  position: absolute;
+  display: block;
+  border: 1px solid rgb(124 58 237 / 0.28);
+  background: rgb(255 255 255 / 0.56);
+}
+
+.compose-dashboard-project-lines span:nth-child(1) {
+  width: 42%;
+  height: 42%;
+  border-radius: 0.75rem;
+  transform: translate(-18%, -8%);
+}
+
+.compose-dashboard-project-lines span:nth-child(2) {
+  width: 32%;
+  height: 30%;
+  border-radius: 0.65rem;
+  transform: translate(30%, 18%);
+}
+
+.compose-dashboard-project-lines span:nth-child(3) {
+  width: 54%;
+  height: 1px;
+  border: 0;
+  background: rgb(59 130 246 / 0.32);
+  transform: translateY(2.2rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compose-dashboard-action,
+  .compose-dashboard-project-card,
+  .compose-dashboard-action::after {
+    transition: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}
+
+/* Interactive 2D floor-plan editor. */
+.compose-editor-light {
+  color-scheme: light;
+  --background: oklch(0.992 0.003 275);
+  --foreground: oklch(0.19 0.018 275);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.19 0.018 275);
+  --primary: oklch(0.57 0.22 292);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.965 0.008 275);
+  --secondary-foreground: oklch(0.31 0.025 275);
+  --muted: oklch(0.97 0.006 275);
+  --muted-foreground: oklch(0.52 0.025 275);
+  --accent: oklch(0.955 0.026 286);
+  --accent-foreground: oklch(0.43 0.18 292);
+  --border: oklch(0.905 0.012 275);
+  --input: oklch(0.88 0.016 275);
+  --ring: oklch(0.62 0.19 292);
+  background:
+    radial-gradient(circle at 14% 3%, rgb(221 214 254 / 0.38), transparent 28rem),
+    radial-gradient(circle at 90% 0%, rgb(191 219 254 / 0.34), transparent 27rem),
+    linear-gradient(180deg, #fbfcff 0%, #f6f8fc 50%, #f8fafc 100%);
+  color: #172033;
+  font-family:
+    Inter, "SF Pro Text", "Segoe UI", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    sans-serif;
+  letter-spacing: 0;
+}
+
+.compose-editor-light *,
+.compose-editor-light *::before,
+.compose-editor-light *::after {
+  letter-spacing: 0;
+}
+
+.compose-editor-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgb(99 102 241 / 0.1) 1px, transparent 1px),
+    linear-gradient(135deg, rgb(255 255 255 / 0.78), transparent 52%);
+  background-size:
+    18px 18px,
+    cover;
+  mask-image: linear-gradient(90deg, #000 0%, transparent 82%);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.compose-editor-canvas {
+  background-color: #f8fafc;
+  background-image:
+    linear-gradient(rgb(148 163 184 / 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(148 163 184 / 0.1) 1px, transparent 1px);
+  background-position: center;
+  background-size: 20px 20px;
+}
+
+.compose-visualization-light {
+  color-scheme: light;
+  letter-spacing: 0;
+}
+
+.compose-visualization-canvas {
+  min-height: 100%;
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compose-editor-light *,
+  .compose-visualization-light * {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+  }
+}

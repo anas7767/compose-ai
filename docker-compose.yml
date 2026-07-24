@@ -1,0 +1,223 @@
+services:
+  postgres:
+    build:
+      context: ./infra/docker/postgres
+    container_name: compose-ai-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-compose_ai}
+      POSTGRES_USER: ${POSTGRES_USER:-compose_ai}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-compose_ai_local_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - compose_ai_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-compose_ai} -d ${POSTGRES_DB:-compose_ai}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: compose-ai-redis
+    restart: unless-stopped
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - compose_ai_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  api:
+    build:
+      context: ./apps/api
+    container_name: compose-ai-api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      ai-worker:
+        condition: service_healthy
+      floor-plan-worker:
+        condition: service_healthy
+    environment: &api_environment
+      COMPOSE_ENV: ${COMPOSE_ENV:-local}
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-compose_ai}:${POSTGRES_PASSWORD:-compose_ai_local_password}@postgres:5432/${POSTGRES_DB:-compose_ai}
+      DATABASE_ECHO: ${DATABASE_ECHO:-false}
+      CORS_ORIGINS: ${CORS_ORIGINS:?CORS_ORIGINS is required}
+      REDIS_URL: redis://redis:6379/0
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY:?CLERK_SECRET_KEY is required}
+      CLERK_JWKS_URL: ${CLERK_JWKS_URL:-}
+      CLERK_ISSUER: ${CLERK_ISSUER:-}
+      CLERK_AUTHORIZED_PARTIES: ${CLERK_AUTHORIZED_PARTIES:?CLERK_AUTHORIZED_PARTIES is required}
+      AI_PROVIDER: ${AI_PROVIDER:?AI_PROVIDER is required}
+      AI_FALLBACK_PROVIDER: ${AI_FALLBACK_PROVIDER:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_TEXT_MODEL: ${GEMINI_TEXT_MODEL:-}
+      GEMINI_IMAGE_MODEL: ${GEMINI_IMAGE_MODEL:-}
+      EXTERIOR_DESIGN_IMAGE_MODEL: ${EXTERIOR_DESIGN_IMAGE_MODEL:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_ORGANIZATION: ${OPENAI_ORGANIZATION:-}
+      OPENAI_PROJECT: ${OPENAI_PROJECT:-}
+      OPENAI_MODEL_BRIEF: ${OPENAI_MODEL_BRIEF:-}
+      OPENAI_MODEL_CHAT: ${OPENAI_MODEL_CHAT:-}
+      OPENAI_MODEL_NORMALIZER: ${OPENAI_MODEL_NORMALIZER:-}
+      OPENAI_MODEL_FLOOR_PLAN: ${OPENAI_MODEL_FLOOR_PLAN:-}
+      OPENAI_MODEL_FALLBACK: ${OPENAI_MODEL_FALLBACK:-}
+      AI_PROMPT_ENV: ${AI_PROMPT_ENV:-development}
+      AI_REQUEST_TIMEOUT_SECONDS: ${AI_REQUEST_TIMEOUT_SECONDS:-45}
+      AI_MAX_RETRIES: ${AI_MAX_RETRIES:-2}
+      AI_MAX_INPUT_TOKENS: ${AI_MAX_INPUT_TOKENS:-32000}
+      AI_MAX_OUTPUT_TOKENS: ${AI_MAX_OUTPUT_TOKENS:-4000}
+      AI_MAX_CONCURRENT_RUNS_PER_ORG: ${AI_MAX_CONCURRENT_RUNS_PER_ORG:-4}
+      AI_USER_RATE_LIMIT_PER_MINUTE: ${AI_USER_RATE_LIMIT_PER_MINUTE:-10}
+      AI_ORG_DAILY_COST_LIMIT_USD: ${AI_ORG_DAILY_COST_LIMIT_USD:-5.00}
+      AI_ORG_MONTHLY_COST_LIMIT_USD: ${AI_ORG_MONTHLY_COST_LIMIT_USD:-50.00}
+      AI_INPUT_PRICE_PER_1M_USD: ${AI_INPUT_PRICE_PER_1M_USD:-0}
+      AI_OUTPUT_PRICE_PER_1M_USD: ${AI_OUTPUT_PRICE_PER_1M_USD:-0}
+      AI_CACHE_TTL_SECONDS: ${AI_CACHE_TTL_SECONDS:-86400}
+      AI_PROVIDER_FAILURE_THRESHOLD: ${AI_PROVIDER_FAILURE_THRESHOLD:-3}
+      AI_PROVIDER_DEGRADED_SECONDS: ${AI_PROVIDER_DEGRADED_SECONDS:-120}
+      AI_RUN_RETENTION_DAYS: ${AI_RUN_RETENTION_DAYS:-90}
+      FLOOR_PLAN_MAX_CONCURRENT_RUNS_PER_ORG: ${FLOOR_PLAN_MAX_CONCURRENT_RUNS_PER_ORG:-2}
+      FLOOR_PLAN_MAX_SOLVER_ATTEMPTS: ${FLOOR_PLAN_MAX_SOLVER_ATTEMPTS:-20}
+      FLOOR_PLAN_MAX_PROVIDER_RETRIES: ${FLOOR_PLAN_MAX_PROVIDER_RETRIES:-2}
+      FLOOR_PLAN_MAX_PROCESSING_SECONDS: ${FLOOR_PLAN_MAX_PROCESSING_SECONDS:-180}
+      FLOOR_PLAN_MAX_INVALID_CANDIDATES: ${FLOOR_PLAN_MAX_INVALID_CANDIDATES:-12}
+      FLOOR_PLAN_DIVERSITY_THRESHOLD: ${FLOOR_PLAN_DIVERSITY_THRESHOLD:-0.250}
+      WORKER_HEARTBEAT_INTERVAL_SECONDS: ${WORKER_HEARTBEAT_INTERVAL_SECONDS:-10}
+      WORKER_HEARTBEAT_STALE_SECONDS: ${WORKER_HEARTBEAT_STALE_SECONDS:-45}
+      READINESS_AI_PROVIDER_CHECK_ENABLED: ${READINESS_AI_PROVIDER_CHECK_ENABLED:-true}
+      READINESS_AI_PROVIDER_TIMEOUT_SECONDS: ${READINESS_AI_PROVIDER_TIMEOUT_SECONDS:-5}
+      ASSET_STORAGE_PROVIDER: ${ASSET_STORAGE_PROVIDER:-local}
+      ASSET_STORAGE_LOCAL_ROOT: ${ASSET_STORAGE_LOCAL_ROOT:-.compose-assets}
+      ASSET_PUBLIC_BASE_URL: ${ASSET_PUBLIC_BASE_URL:-/api/v1/assets}
+      ASSET_STORAGE_PREFIX: ${ASSET_STORAGE_PREFIX:-compose-ai}
+      ASSET_STORAGE_S3_BUCKET: ${ASSET_STORAGE_S3_BUCKET:-}
+      ASSET_STORAGE_S3_REGION: ${ASSET_STORAGE_S3_REGION:-us-east-1}
+      ASSET_STORAGE_S3_ENDPOINT_URL: ${ASSET_STORAGE_S3_ENDPOINT_URL:-}
+      ASSET_STORAGE_S3_ACCESS_KEY_ID: ${ASSET_STORAGE_S3_ACCESS_KEY_ID:-}
+      ASSET_STORAGE_S3_SECRET_ACCESS_KEY: ${ASSET_STORAGE_S3_SECRET_ACCESS_KEY:-}
+      ASSET_STORAGE_S3_PUBLIC_BASE_URL: ${ASSET_STORAGE_S3_PUBLIC_BASE_URL:-}
+      ASSET_MAX_IMAGE_BYTES: ${ASSET_MAX_IMAGE_BYTES:-10485760}
+    ports:
+      - "${COMPOSE_API_PORT:-8000}:8000"
+    volumes:
+      - compose_ai_assets:/app/.compose-assets
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/health/ready', timeout=10)",
+        ]
+      interval: 15s
+      timeout: 12s
+      retries: 5
+      start_period: 30s
+
+  ai-worker:
+    build:
+      context: ./apps/api
+    container_name: compose-ai-ai-worker
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      <<: *api_environment
+      COMPOSE_WORKER_ID: ai-worker
+    command: ["python", "-m", "compose_ai_api.domains.ai_architect.worker"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import asyncio; from compose_ai_api.core.worker_health import check_worker; from compose_ai_api.domains.infrastructure.models import WorkerKind; raise SystemExit(0 if asyncio.run(check_worker(WorkerKind.AI_ARCHITECT)) else 1)",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  floor-plan-worker:
+    build:
+      context: ./apps/api
+    container_name: compose-ai-floor-plan-worker
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      <<: *api_environment
+      COMPOSE_WORKER_ID: floor-plan-worker
+    command: ["python", "-m", "compose_ai_api.domains.floor_plans.worker"]
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import asyncio; from compose_ai_api.core.worker_health import check_worker; from compose_ai_api.domains.infrastructure.models import WorkerKind; raise SystemExit(0 if asyncio.run(check_worker(WorkerKind.FLOOR_PLAN)) else 1)",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: compose-ai-web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:?NEXT_PUBLIC_API_BASE_URL is required}
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:?NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is required}
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY:?CLERK_SECRET_KEY is required}
+      NEXT_PUBLIC_CLERK_SIGN_IN_URL: ${NEXT_PUBLIC_CLERK_SIGN_IN_URL:-/sign-in}
+      NEXT_PUBLIC_CLERK_SIGN_UP_URL: ${NEXT_PUBLIC_CLERK_SIGN_UP_URL:-/sign-up}
+      NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL: ${NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL:-/dashboard}
+      NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL: ${NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL:-/dashboard}
+      NEXT_PUBLIC_CLERK_AFTER_SIGN_OUT_URL: ${NEXT_PUBLIC_CLERK_AFTER_SIGN_OUT_URL:-/}
+    ports:
+      - "${WEB_PORT:-3000}:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3000/sign-in').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  compose_ai_postgres_data:
+  compose_ai_redis_data:
+  compose_ai_assets:

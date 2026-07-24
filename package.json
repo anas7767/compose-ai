@@ -1,0 +1,41 @@
+{
+  "name": "compose-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-powered building architecture SaaS monorepo.",
+  "packageManager": "npm@10.9.0",
+  "workspaces": [
+    "apps/web",
+    "packages/shared"
+  ],
+  "engines": {
+    "node": ">=22.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "prebuild": "node scripts/check-node-version.mjs",
+    "build": "turbo build",
+    "predev": "node scripts/check-node-version.mjs",
+    "dev": "turbo dev",
+    "dev:web": "npm run dev -w @compose-ai/web",
+    "dev:api": "cd apps/api && python -m uvicorn compose_ai_api.main:app --reload --host 0.0.0.0 --port 8000",
+    "prelint": "node scripts/check-node-version.mjs",
+    "lint": "turbo lint && npm run lint:api",
+    "lint:api": "cd apps/api && ruff check .",
+    "format": "prettier --write . && cd apps/api && ruff format .",
+    "format:check": "prettier --check . && cd apps/api && ruff format --check .",
+    "pretypecheck": "node scripts/check-node-version.mjs",
+    "typecheck": "turbo typecheck",
+    "pretest": "node scripts/check-node-version.mjs",
+    "test": "npm run test:api",
+    "test:api": "cd apps/api && python -m pytest",
+    "db:migrate": "cd apps/api && alembic upgrade head",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "turbo": "^2.5.0",
+    "typescript": "^5.7.0"
+  }
+}

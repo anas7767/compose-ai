@@ -1,0 +1,4 @@
+Alembic migration scripts for the Compose AI API.
+
+Database models are imported through compose_ai_api.models so autogeneration can compare
+SQLAlchemy metadata with the configured PostgreSQL database.
